@@ -17,23 +17,31 @@ export type Excercise = {
   instructions?: string;
   link?: string;
 };
+export type WorkoutIdentifier = {
+  name: string;
+  id: number;
+};
+export type Workout = WorkoutIdentifier & { superSets: Set[] };
 
-export type ActiveWorkout = {
+export type ActiveWorkout = WorkoutIdentifier & {
   excerciseList: Excercise[];
   currentExcerciseIndex: number;
 };
 
-function workoutPlanToCurrentWorkout(plan: Set[]): ActiveWorkout {
+function workoutPlanToCurrentWorkout(selectedWorkout: Workout): ActiveWorkout {
+  let flattenedSet = selectedWorkout.superSets
+    .flatMap((set) => set)
+    .map((set): Excercise[] =>
+      Array(set.sets)
+        .fill([])
+        .map((item) => [...set.moves])
+        .flat()
+    )
+    .flatMap((ex) => ex);
   return {
-    excerciseList: plan
-      .flatMap((set) => set)
-      .map((set): Excercise[] =>
-        Array(set.sets)
-          .fill([])
-          .map((item) => [...set.moves])
-          .flat()
-      )
-      .flatMap((ex) => ex),
+    name: selectedWorkout.name,
+    id: selectedWorkout.id,
+    excerciseList: flattenedSet,
     currentExcerciseIndex: 0,
   };
 }
