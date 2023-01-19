@@ -1,5 +1,5 @@
 import { Progressions } from "./ProgressionEnum";
-import { Workout } from "./plan";
+import { Workout } from "../plan";
 
 const sampleWorkout1: Workout = {
   id: 1,

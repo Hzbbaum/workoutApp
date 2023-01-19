@@ -1,4 +1,4 @@
-import { Workout } from "./plan";
+import { Workout } from "../plan";
 
 export default await getWorkoutList();
 

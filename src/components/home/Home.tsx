@@ -1,5 +1,5 @@
 import React from "react";
-import { WorkoutIdentifier } from "../data/plan";
+import { WorkoutIdentifier } from "../../data/plan";
 
 function Home(props: {
   updateSelectedWorkout: (id: number) => void;

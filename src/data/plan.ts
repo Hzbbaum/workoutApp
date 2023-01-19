@@ -1,4 +1,4 @@
-import { Progressions } from "./ProgressionEnum";
+import { Progressions } from "./mockData/ProgressionEnum";
 
 export type Set = {
   moves: Excercise[];
@@ -23,12 +23,13 @@ export type WorkoutIdentifier = {
 };
 export type Workout = WorkoutIdentifier & { superSets: Set[] };
 
-export type ActiveWorkout = WorkoutIdentifier & {
+export type CurrentlySelectedWorkout = WorkoutIdentifier & {
   excerciseList: Excercise[];
   currentExcerciseIndex: number;
+  workoutStatus: "pending" | "inProgress" | "suspended" | "completed";
 };
 
-function workoutPlanToCurrentWorkout(selectedWorkout: Workout): ActiveWorkout {
+function initializeCurrentWorkoutFromPlan(selectedWorkout: Workout): CurrentlySelectedWorkout {
   let flattenedSet = selectedWorkout.superSets
     .flatMap((set) => set)
     .map((set): Excercise[] =>
@@ -43,7 +44,8 @@ function workoutPlanToCurrentWorkout(selectedWorkout: Workout): ActiveWorkout {
     id: selectedWorkout.id,
     excerciseList: flattenedSet,
     currentExcerciseIndex: 0,
+    workoutStatus: "pending",
   };
 }
 
-export { workoutPlanToCurrentWorkout };
+export { initializeCurrentWorkoutFromPlan as workoutPlanToCurrentWorkout };

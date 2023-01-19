@@ -1,22 +1,32 @@
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import "./App.css";
-import Home from "./components/home";
+import Header from "./components/layout/Header";
 import {
-  ActiveWorkout,
+  CurrentlySelectedWorkout,
   Workout,
   WorkoutIdentifier,
   workoutPlanToCurrentWorkout,
 } from "./data/plan";
+import Footer from "./components/layout/Footer";
+import Home from "./components/home/Home";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import {
+  selectCurrentWorkoutName,
+  setActiveWorkout,
+} from "./store/currentWorkoutSlice";
 
 function App() {
   const [currentWorkout, setCurrentWorkout] = useState<
-    ActiveWorkout | undefined
+    CurrentlySelectedWorkout | undefined
   >(undefined);
   const [workoutNamesList, setWorkoutNamesList] = useState<Workout[]>([]);
+  const dispatch = useAppDispatch();
+  const select = useAppSelector;
+  const activeWorkoutName = select(selectCurrentWorkoutName);
 
   useEffect(() => {
     const getData = async () => {
-      let sampleWorkoutList = await import("./data/sampleWorkoutList");
+      let sampleWorkoutList = await import("./data/mockData/sampleWorkoutList");
       setWorkoutNamesList((state) => [...sampleWorkoutList.default]);
     };
     getData().catch((e) => console.log(e));
@@ -32,10 +42,10 @@ function App() {
 
   function updateSelectedWorkout(id: number) {
     const selectedWorkout = workoutNamesList.find(
-      workout => workout.id == id
+      (workout) => workout.id == id
     );
     if (selectedWorkout) {
-      setCurrentWorkout(workoutPlanToCurrentWorkout(selectedWorkout));
+      dispatch(setActiveWorkout(workoutPlanToCurrentWorkout(selectedWorkout)));
     }
   }
 
@@ -51,41 +61,46 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <h1>your selected workout is: {currentWorkout?.name}</h1>
-      <Home
-        selectedWorkout={currentWorkout?.id ?? undefined}
-        workoutList={workoutNamesList.map((workout): WorkoutIdentifier => {
-          return { name: workout.name, id: workout.id };
-        })}
-        updateSelectedWorkout={updateSelectedWorkout}
-      />
-      <h2>
-        {
-          currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex]
-            .name
-        }
-      </h2>
-      <h3>
-        you should aim for{" "}
-        {
-          currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex]
-            .repStart
-        }{" "}
-        -{" "}
-        {
-          currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex]
-            .repsEnd
-        }{" "}
+    <div className="App flex min-h-screen flex-col  bg-slate-700/50">
+      <Header />
+      <main className="container mx-auto flex-grow font-semibold pt-6">
+        <h1>your selected workout is: {activeWorkoutName}</h1>
+        <Home
+          selectedWorkout={currentWorkout?.id ?? undefined}
+          workoutList={workoutNamesList.map((workout): WorkoutIdentifier => {
+            return { name: workout.name, id: workout.id };
+          })}
+          updateSelectedWorkout={updateSelectedWorkout}
+        />
+        <h2>
+          {
+            currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex]
+              .name
+          }
+        </h2>
+        <h3>
+          you should aim for{" "}
+          {
+            currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex]
+              .repStart
+          }{" "}
+          -{" "}
+          {
+            currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex]
+              .repsEnd
+          }{" "}
+          {currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex]
+            .timed
+            ? "seconds"
+            : "reps"}
+        </h3>
         {currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex]
           .timed
-          ? "seconds"
-          : "reps"}
-      </h3>
-      {currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex].timed
-        ? timer
-        : target}
-      <button onClick={advanceExcercise}> next!</button>
+          ? timer
+          : target}
+        <button onClick={advanceExcercise}> next!</button>
+      </main>
+      <Footer />
     </div>
   );
 }
