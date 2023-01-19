@@ -61,9 +61,9 @@ function App() {
   }
 
   return (
-    <div className="App flex min-h-screen flex-col  bg-slate-700/50">
+    <div className="App flex min-h-screen flex-col bg-slate-700/50">
       <Header />
-      <main className="container mx-auto flex-grow font-semibold pt-6">
+      <main className="container mx-auto flex-grow pt-6 font-semibold">
         <h1>your selected workout is: {activeWorkoutName}</h1>
         <Home
           selectedWorkout={currentWorkout?.id ?? undefined}
