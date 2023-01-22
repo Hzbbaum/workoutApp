@@ -26,7 +26,6 @@ export type Workout = WorkoutIdentifier & { superSets: Set[] };
 export type CurrentlySelectedWorkout = WorkoutIdentifier & {
   excerciseList: Excercise[];
   currentExcerciseIndex: number;
-  workoutStatus: "pending" | "inProgress" | "suspended" | "completed";
 };
 
 function initializeCurrentWorkoutFromPlan(selectedWorkout: Workout): CurrentlySelectedWorkout {
@@ -44,7 +43,6 @@ function initializeCurrentWorkoutFromPlan(selectedWorkout: Workout): CurrentlySe
     id: selectedWorkout.id,
     excerciseList: flattenedSet,
     currentExcerciseIndex: 0,
-    workoutStatus: "pending",
   };
 }
 

@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Workout, workoutPlanToCurrentWorkout } from "../../data/plan";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { selectCurrentWorkout, setActiveWorkout } from "../../store/currentWorkoutSlice";
+import { AppStates, selectAppState } from "../../store/appStateSlice";
+import { setActiveWorkout } from "../../store/commonActions";
+import { selectCurrentWorkout } from "../../store/currentWorkoutSlice";
+import CurrentExcerciseView from "./CurrentExcerciseView";
+import SessionReview from "./SessionReview";
+import WorkoutOverView from "./WorkoutOverView";
 import WorkoutSelectInput from "./WorkoutSelectInput";
+import WorkoutSuspendedView from "./WorkoutSuspendedView";
 
 function Home() {
   const [availableWorkoutsList, setAvailableWorkoutNamesList] = useState<
     Workout[]
   >([]);
 
-  const select = useAppSelector;
   const selectedWorkout = useAppSelector(selectCurrentWorkout);
   const dispatch = useAppDispatch();
 
@@ -31,15 +36,22 @@ function Home() {
       dispatch(setActiveWorkout(workoutPlanToCurrentWorkout(selectedWorkout)));
     }
   }
+  const appState = useAppSelector(selectAppState);
+
 
   return (
     <div>
-      {/* <h2>Choose Your Workout:</h2> */}
-      <WorkoutSelectInput
-        updateSelectedWorkout={updateWorkoutHandler}
-        selectedWorkout={selectedWorkout}
-        workoutList={availableWorkoutsList}
-      />
+      {appState === AppStates.UNITIALIZED && (
+        <WorkoutSelectInput
+          updateSelectedWorkout={updateWorkoutHandler}
+          selectedWorkout={selectedWorkout}
+          workoutList={availableWorkoutsList}
+        />
+      )}
+      {appState === AppStates.COMPLETE && <SessionReview />}
+      {appState === AppStates.IN_WORKOUT && <CurrentExcerciseView />}
+      {appState === AppStates.PENDING && <WorkoutOverView />}
+      {appState === AppStates.SUSPENDED && <WorkoutSuspendedView />}
     </div>
   );
 }

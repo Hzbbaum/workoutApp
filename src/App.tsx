@@ -10,14 +10,13 @@ import {
 import Footer from "./components/layout/Footer";
 import Home from "./components/home/Home";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import {
-  selectCurrentWorkoutName,
-  setActiveWorkout,
-} from "./store/currentWorkoutSlice";
+import { selectCurrentWorkoutName } from "./store/currentWorkoutSlice";
+import { selectAppState } from "./store/appStateSlice";
 
 function App() {
   const select = useAppSelector;
   const activeWorkoutName = select(selectCurrentWorkoutName);
+  const appState = select(selectAppState);
 
   // const timer = (
   //   <div>
@@ -41,6 +40,7 @@ function App() {
   return (
     <div className="App flex min-h-screen flex-col bg-slate-700/50">
       <Header />
+      {appState}
       <main className="container mx-auto flex-grow pt-6 font-semibold">
         <h1>your selected workout is: {activeWorkoutName}</h1>
         <Home />

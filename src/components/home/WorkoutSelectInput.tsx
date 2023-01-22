@@ -8,13 +8,14 @@ function WorkoutSelectInput(props: {
   workoutList: WorkoutIdentifier[];
 }) {
   function handleValueChange(id: number) {
-    // e.preventDefault();
-    // e.stopPropagation();
     props.updateSelectedWorkout(id);
   }
 
   return (
-    <Listbox value={props.selectedWorkout?.id} onChange={handleValueChange}>
+    <Listbox
+      value={props.selectedWorkout?.id ?? "please select a value"}
+      onChange={handleValueChange}
+    >
       <div className="my-8 w-72">
         <Listbox.Button className="relative w-full rounded-md bg-white py-2 px-2 text-left">
           <span className="truncate">
