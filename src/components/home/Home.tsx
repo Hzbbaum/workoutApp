@@ -6,7 +6,7 @@ import { setActiveWorkout } from "../../store/commonActions";
 import { selectCurrentWorkout } from "../../store/currentWorkoutSlice";
 import CurrentExcerciseView from "./CurrentExcerciseView";
 import SessionReview from "./SessionReview";
-import WorkoutOverView from "./WorkoutOverView";
+import WorkoutOverView from "./WorkoutOverview/WorkoutOverView";
 import WorkoutSelectInput from "./WorkoutSelectInput";
 import WorkoutSuspendedView from "./WorkoutSuspendedView";
 
@@ -38,10 +38,10 @@ function Home() {
   }
   const appState = useAppSelector(selectAppState);
 
-
   return (
     <div>
-      {appState === AppStates.UNITIALIZED && (
+      {(appState === AppStates.UNITIALIZED ||
+        appState === AppStates.PENDING) && (
         <WorkoutSelectInput
           updateSelectedWorkout={updateWorkoutHandler}
           selectedWorkout={selectedWorkout}
