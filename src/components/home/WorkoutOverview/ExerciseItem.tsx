@@ -3,21 +3,29 @@ import { Excercise } from "../../../data/plan";
 
 function ExerciseItem(props: { excerciseItem: Excercise }) {
   return (
-    <li className="flex flex-row flex-nowrap py-2 gap-4">
-      <div className="aspect-square h-full flex-grow-0">
-        <img className="" src={props.excerciseItem.gif} alt="props.excerciseItem.name" />
+    <li className="flex flex-row flex-nowrap gap-4 py-2">
+      <div className="h-full flex-grow-0 basis-24" >
+        <img
+          className=""
+          src={props.excerciseItem.gif}
+          alt="props.excerciseItem.name"
+        />
       </div>
-      <div className="flex-grow-1 flex-shrink basis-full">
-        <div>{props.excerciseItem.name}</div>
-        <p>{props.excerciseItem.instructions}</p>
-        <div>
-          required range is:{props.excerciseItem.repStart} - {" "}
-          {props.excerciseItem.repsEnd}
-        </div>
-        {props.excerciseItem.eachSide ?? (
-          <div>Remember to repeat for each side!</div>
+      <div className="flex-grow-1 flex-shrink  md:flex-grow-0">
+        <h3 className="font-dosis text-xl font-extralight">
+          {props.excerciseItem.name}
+        </h3>
+        <h4 className="text-sm font-normal">
+          {props.excerciseItem.repStart} - {props.excerciseItem.repsEnd}{" "}
+          {props.excerciseItem.timed ? "seconds" : "reps"}
+        </h4>
+        {props.excerciseItem.eachSide}
+        {props.excerciseItem.eachSide ? (
+          <b className="font-semibold">Repeat each side!</b>
+        ) : (
+          ""
         )}
-        <div>{props.excerciseItem.name}</div>
+        <p className="text-sm font-light">{props.excerciseItem.instructions}</p>
       </div>
     </li>
   );

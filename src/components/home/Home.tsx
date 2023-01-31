@@ -39,7 +39,7 @@ function Home() {
   const appState = useAppSelector(selectAppState);
 
   return (
-    <div>
+    <React.Fragment>
       {(appState === AppStates.UNITIALIZED ||
         appState === AppStates.PENDING) && (
         <WorkoutSelectInput
@@ -52,7 +52,7 @@ function Home() {
       {appState === AppStates.IN_WORKOUT && <CurrentExcerciseView />}
       {appState === AppStates.PENDING && <WorkoutOverView />}
       {appState === AppStates.SUSPENDED && <WorkoutSuspendedView />}
-    </div>
+    </React.Fragment>
   );
 }
 

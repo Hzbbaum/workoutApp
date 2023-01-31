@@ -17,18 +17,23 @@ export type Excercise = {
   instructions?: string;
   link?: string;
 };
-export type WorkoutIdentifier = {
+export type WorkoutMetaData = {
   name: string;
   id: number;
+  description?: string;
+  link?: string;
 };
-export type Workout = WorkoutIdentifier & { superSets: Set[] };
 
-export type CurrentlySelectedWorkout = WorkoutIdentifier & {
+export type Workout = WorkoutMetaData & { superSets: Set[] };
+
+export type CurrentlySelectedWorkout = WorkoutMetaData & {
   excerciseList: Excercise[];
   currentExcerciseIndex: number;
 };
 
-function initializeCurrentWorkoutFromPlan(selectedWorkout: Workout): CurrentlySelectedWorkout {
+function initializeCurrentWorkoutFromPlan(
+  selectedWorkout: Workout
+): CurrentlySelectedWorkout {
   let flattenedSet = selectedWorkout.superSets
     .flatMap((set) => set)
     .map((set): Excercise[] =>

@@ -4,7 +4,7 @@ import Header from "./components/layout/Header";
 import {
   CurrentlySelectedWorkout,
   Workout,
-  WorkoutIdentifier,
+  WorkoutMetaData,
   workoutPlanToCurrentWorkout,
 } from "./data/plan";
 import Footer from "./components/layout/Footer";
@@ -12,65 +12,29 @@ import Home from "./components/home/Home";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { selectCurrentWorkoutName } from "./store/currentWorkoutSlice";
 import { selectAppState } from "./store/appStateSlice";
+import { appPages, appPagesType } from "./AppPages";
+import About from "./components/about/About";
+import Progress from "./components/progress/Progress";
+import Other from "./components/other/Other";
 
 function App() {
   const select = useAppSelector;
   const activeWorkoutName = select(selectCurrentWorkoutName);
   const appState = select(selectAppState);
-
-  // const timer = (
-  //   <div>
-  //     time for excercise:
-  //     <button>GO!</button>
-  //   </div>
-  // );
-  // const target = <div>your target number of reps</div>;
-
-  // function advanceExcercise(e: React.BaseSyntheticEvent) {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  //   if (currentWorkout !== undefined) {
-  //     setCurrentWorkout({
-  //       ...currentWorkout,
-  //       currentExcerciseIndex: currentWorkout.currentExcerciseIndex + 1,
-  //     });
-  //   }
-  // }
+  const pages: { [key in appPagesType]: JSX.Element } = {
+    HOME: <Home />,
+    PROGRESS: <Progress />,
+    ABOUT: <About />,
+    OTHER: <Other />,
+  };
+  let displayedPage = <Home />;
+  const [selectedNav, setSelectedNav] = useState<appPagesType>("HOME");
 
   return (
-    <div className="App flex min-h-screen flex-col bg-slate-700/50">
-      <Header />
-      {appState}
-      <main className="container mx-auto flex-grow pt-6 font-semibold">
-        <h1>your selected workout is: {activeWorkoutName}</h1>
-        <Home />
-        {/* <h2>
-          {
-            currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex]
-              .name
-          }
-        </h2>
-        <h3>
-          you should aim for{" "}
-          {
-            currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex]
-              .repStart
-          }{" "}
-          -{" "}
-          {
-            currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex]
-              .repsEnd
-          }{" "}
-          {currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex]
-            .timed
-            ? "seconds"
-            : "reps"}
-        </h3>
-        {currentWorkout?.excerciseList[currentWorkout.currentExcerciseIndex]
-          .timed
-          ? timer
-          : target}
-        <button onClick={advanceExcercise}> next!</button> */}
+    <div className="App flex min-h-screen flex-col  font-raleway">
+      <Header changeNavigationHandler={setSelectedNav} />
+      <main className="container mx-auto flex-grow px-4 pt-6 font-semibold text-indigo-500">
+        {pages[selectedNav]}{" "}
       </main>
       <Footer />
     </div>
