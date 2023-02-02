@@ -27,7 +27,6 @@ function WorkoutOverView() {
         .padStart(2, "0");
 
     return (h !== "00" ? h + ":" : "") + m + ":" + s;
-    //return `${h}:${m}:${s}`;
   }
   function getWorkoutTimeEstimation(workoutList: Excercise[]) {
     const timeInSeconds = workoutList.reduce(
@@ -43,25 +42,31 @@ function WorkoutOverView() {
   return (
     <div>
       <button
-        className="mx-20 border border-indigo-500 bg-indigo-500 px-4 py-2 font-dosis text-4xl font-extralight  text-white transition duration-150 hover:bg-white hover:text-indigo-500"
+        className="mx-20 border sh border-indigo-500 bg-indigo-500 px-4 py-2 font-dosis text-4xl font-extralight  text-white transition duration-150 hover:bg-white hover:text-indigo-500"
         onClick={startWorkoutHandler}
       >
         Start Workout!
       </button>
-      <h2>{chosenWorkout?.name}</h2>
+      <h2 className="pt-8">{chosenWorkout?.name}</h2>
       {chosenWorkout !== undefined ? (
-        <span>
+        <span className="pt-4">
           estimated time is:{" "}
           {getWorkoutTimeEstimation(chosenWorkout.excerciseList)}
         </span>
       ) : (
         ""
       )}
-      <ul>
+      <ul className="bg-indigo-200/25 shadow-lg shadow-indigo-200 spa pt-4 md:overflow-x-auto overflow-y-hidden md:whitespace-nowrap scrollbar md:h-96 scrollbar-thumb-indigo-500 scrollbar-track-indigo-100 md:mb-16">
         {chosenWorkout?.excerciseList.map((excercise, index) => (
           <ExerciseItem excerciseItem={excercise} key={index} />
         ))}
       </ul>
+      <button
+        className="mx-20 border my-8 border-indigo-500 bg-indigo-500 px-4 py-2 font-dosis text-4xl font-extralight  text-white transition duration-150 hover:bg-white hover:text-indigo-500"
+        onClick={startWorkoutHandler}
+      >
+        Start Workout!
+      </button>
     </div>
   );
 }

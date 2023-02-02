@@ -1,12 +1,6 @@
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/layout/Header";
-import {
-  CurrentlySelectedWorkout,
-  Workout,
-  WorkoutMetaData,
-  workoutPlanToCurrentWorkout,
-} from "./data/plan";
 import Footer from "./components/layout/Footer";
 import Home from "./components/home/Home";
 import { useAppDispatch, useAppSelector } from "./hooks";
@@ -27,7 +21,6 @@ function App() {
     ABOUT: <About />,
     OTHER: <Other />,
   };
-  let displayedPage = <Home />;
   const [selectedNav, setSelectedNav] = useState<appPagesType>("HOME");
 
   return (
